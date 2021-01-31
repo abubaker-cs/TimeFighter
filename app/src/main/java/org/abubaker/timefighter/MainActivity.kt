@@ -3,6 +3,7 @@ package org.abubaker.timefighter
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -41,7 +42,12 @@ class MainActivity : AppCompatActivity() {
         timeLeftTextView = findViewById(R.id.time_left_text_view)
         tapButton = findViewById(R.id.tap_me_button)
 
-        tapButton.setOnClickListener {
+        tapButton.setOnClickListener { v ->
+
+            // Applying Animation
+            val bounceAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce)
+            v.startAnimation(bounceAnimation)
+
             incrementScore()
         }
 
