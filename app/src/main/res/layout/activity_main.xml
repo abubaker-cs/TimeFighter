@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
 
-    <!-- Left:  -->
+    <!-- Left: Game Score -->
     <TextView
         android:id="@+id/game_score_text_view"
         android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Right:  -->
+    <!-- Right: Time Left -->
     <TextView
         android:id="@+id/time_left_text_view"
         android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Action:  -->
+    <!-- Action: Tap Me (Button) -->
     <Button
         android:id="@+id/tap_me_button"
         android:layout_width="wrap_content"
