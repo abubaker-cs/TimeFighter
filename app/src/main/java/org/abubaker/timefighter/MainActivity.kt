@@ -1,6 +1,7 @@
 package org.abubaker.timefighter
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,12 @@ class MainActivity : AppCompatActivity() {
 
     // DATA
     private var score = 0
+    private var gameStarted = false
+
+    private lateinit var countDownTimer: CountDownTimer
+    private var initialCountDown: Long = 60000
+    private var countDownInterval: Long = 1000
+    private var timeLeft = 60
 
 
     // onCreate - Connect views to the variables
@@ -36,14 +43,36 @@ class MainActivity : AppCompatActivity() {
 
         score++
 
-        val newScore = "Your Score: $score"
+        // val newScore = "Your Score: $score"
+        val newScore = getString(R.string.your_score, score)
         gameScoreTextView.text = newScore
 
     }
 
     // Reset game logic
     private fun resetGame() {
+        score = 0
 
+        val initialScore = getString(R.string.your_score, score)
+        gameScoreTextView.text = initialScore
+
+        val initialTimeLeft = getString(R.string.time_left, 60)
+        timeLeftTextView.text = initialTimeLeft
+
+        countDownTimer = object : CountDownTimer(initialCountDown, countDownInterval) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeLeft = millisUntilFinished.toInt() / 1000
+
+                val timeLeftString = getString(R.string.time_left, timeLeft)
+                timeLeftTextView.text = timeLeftString
+            }
+
+            override fun onFinish() {
+                // TODO("Not yet implemented")
+            }
+        }
+
+        gameStarted = false
     }
 
     // start game logic
