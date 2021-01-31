@@ -3,10 +3,13 @@ package org.abubaker.timefighter
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -170,5 +173,45 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
 
         Log.d(TAG, "onDestroy Called")
+    }
+
+    /***
+     * Options menu - for About Developer
+     */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        // Inflate the menu | This adds item to the action bar if it is present
+        super.onCreateOptionsMenu(menu)
+
+        // Inflate menu from @res/menu/menu.xml
+        menuInflater.inflate(R.menu.menu, menu)
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (item.itemId == R.id.about_item) {
+            showInfo()
+        }
+
+        return true
+    }
+
+    // Markup for the Dialog
+    private fun showInfo() {
+
+        // Define parameters
+        val dialogTitle = getString(R.string.about_title, BuildConfig.VERSION_NAME)
+        val dialogMessage = getString(R.string.about_message)
+
+        // Attach parameters
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(dialogTitle)
+        builder.setMessage(dialogMessage)
+
+        // Show the dialog
+        builder.create().show()
+        
     }
 }
