@@ -2,6 +2,7 @@ package org.abubaker.timefighter
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -18,6 +19,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var countDownTimer: CountDownTimer
     private val initialCountDown: Long = 10000 // 10 Seconds
     private val countDownInterval: Long = 1000
+    private var timeLeftOnTimer: Long = 10000
+
+
+    companion object {
+        private val TAG = MainActivity::class.java.simpleName
+        private const val SCORE_KEY = "SCORE_KEY"
+        private const val TIME_LEFT_KEY = "TIME_LEFT_KEY"
+
+    }
 
     // onCreate()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         // Inflate Layout: @layout/activity_main.xml
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        Log.d(TAG, "onCreate called. Score is : $score")
+
         binding.tapMeButton.setOnClickListener { _ ->
             incrementScore()
         }
@@ -34,6 +46,22 @@ class MainActivity : AppCompatActivity() {
         // It will display the initial (default) value of the score = 0
         // binding.gameScoreTextView.text = getString(R.string.yourScore, score)
         resetGame()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putInt(SCORE_KEY, score)
+        outState.putLong(TIME_LEFT_KEY, timeLeftOnTimer)
+        countDownTimer.cancel()
+
+        Log.d(TAG, "onSaveInstanceState: Saving Score: $score & Time Left: $timeLeftOnTimer")
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy Called.")
     }
 
     private fun resetGame() {
@@ -45,7 +73,9 @@ class MainActivity : AppCompatActivity() {
         binding.timeLeftTextView.text = getString(R.string.timeLeft, initialTimeLeft)
 
         countDownTimer = object : CountDownTimer(initialCountDown, countDownInterval) {
+
             override fun onTick(millisUntilFinished: Long) {
+                timeLeftOnTimer = millisUntilFinished
                 val timeLeft = millisUntilFinished / 1000
                 binding.timeLeftTextView.text = getString(R.string.timeLeft, timeLeft)
             }
