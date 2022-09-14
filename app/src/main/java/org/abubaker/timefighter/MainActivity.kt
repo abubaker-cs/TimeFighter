@@ -43,9 +43,17 @@ class MainActivity : AppCompatActivity() {
             incrementScore()
         }
 
+        if (savedInstanceState != null) {
+            score = savedInstanceState.getInt(SCORE_KEY)
+            timeLeftOnTimer = savedInstanceState.getLong(TIME_LEFT_KEY)
+            resetGame()
+        } else {
+            resetGame()
+        }
+
         // It will display the initial (default) value of the score = 0
         // binding.gameScoreTextView.text = getString(R.string.yourScore, score)
-        resetGame()
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -97,6 +105,31 @@ class MainActivity : AppCompatActivity() {
         score += 1
         val newScore = getString(R.string.yourScore, score)
         binding.gameScoreTextView.text = newScore
+    }
+
+    private fun restoreGame() {
+        binding.gameScoreTextView.text = getString(R.string.yourScore, score)
+
+        val restoredTime = timeLeftOnTimer / 1000
+
+        binding.timeLeftTextView.text = getString(R.string.timeLeft, restoredTime)
+
+        countDownTimer = object : CountDownTimer(timeLeftOnTimer, countDownInterval) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                timeLeftOnTimer = millisUntilFinished
+                val timeLeft = millisUntilFinished / 1000
+                binding.timeLeftTextView.text = getString(R.string.timeLeft, timeLeft)
+            }
+
+            override fun onFinish() {
+                endGame()
+            }
+
+        }
+
+        startGame()
+
     }
 
     private fun startGame() {
