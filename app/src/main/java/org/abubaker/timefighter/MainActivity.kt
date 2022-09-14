@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState != null) {
             score = savedInstanceState.getInt(SCORE_KEY)
             timeLeftOnTimer = savedInstanceState.getLong(TIME_LEFT_KEY)
-            resetGame()
+            restoreGame()
         } else {
             resetGame()
         }
