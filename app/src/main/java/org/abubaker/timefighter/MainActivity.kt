@@ -3,6 +3,7 @@ package org.abubaker.timefighter
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -39,7 +40,9 @@ class MainActivity : AppCompatActivity() {
 
         Log.d(TAG, "onCreate called. Score is : $score")
 
-        binding.tapMeButton.setOnClickListener { _ ->
+        binding.tapMeButton.setOnClickListener { view ->
+            val bounceAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce)
+            view.startAnimation(bounceAnimation)
             incrementScore()
         }
 
