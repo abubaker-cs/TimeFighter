@@ -2,6 +2,7 @@ package org.abubaker.timefighter
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import org.abubaker.timefighter.databinding.ActivityMainBinding
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private var gameStarted = false
 
     private lateinit var countDownTimer: CountDownTimer
-    private val initialCountDown: Long = 60000
+    private val initialCountDown: Long = 10000 // 10 Seconds
     private val countDownInterval: Long = 1000
 
     // onCreate()
@@ -31,7 +32,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // It will display the initial (default) value of the score = 0
-        binding.gameScoreTextView.text = getString(R.string.yourScore, score)
+        // binding.gameScoreTextView.text = getString(R.string.yourScore, score)
+        resetGame()
     }
 
     private fun resetGame() {
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                // To be implemented later
+                endGame()
             }
 
         }
@@ -58,9 +60,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun incrementScore() {
+        if (!gameStarted) {
+            startGame()
+        }
+
         score += 1
         val newScore = getString(R.string.yourScore, score)
         binding.gameScoreTextView.text = newScore
+    }
+
+    private fun startGame() {
+        countDownTimer.start()
+        gameStarted = true
+    }
+
+    private fun endGame() {
+        Toast.makeText(this, getString(R.string.gameOverMessage, score), Toast.LENGTH_SHORT).show()
+        resetGame()
     }
 
 }
